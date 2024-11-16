@@ -1,0 +1,34 @@
+# Project specific
+workdir/*
+!workdir/.gitkeep
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+Session.vim
+.netrwhist
+*~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Build
+*.o
+*.out
+*.bin
+*.elf
+*.exe
+
+# Debug
+.gdb_history
+peda-session-*.txt
+
+# OS specific
+.DS_Store
+.directory
+.Trash-*
