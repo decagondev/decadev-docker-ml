@@ -1,15 +1,20 @@
-# 🛠️ Advanced Development & Reverse Engineering Environment
+# 🛠️ Advanced Development, AI Engineering & Reverse Engineering Environment
 
-> 🔬 A professional-grade Docker environment for systems programming, reverse engineering, binary analysis, and secure development.
+> 🔬 A professional-grade Docker environment for AI/ML development, systems programming, reverse engineering, binary analysis, and secure development.
 
 [![Docker Required](https://img.shields.io/badge/Docker-Required-blue?logo=docker)](https://docs.docker.com/get-docker/)
 [![NeoVim](https://img.shields.io/badge/NeoVim-LazyVim-green?logo=neovim)](https://www.lazyvim.org/)
+[![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)](https://www.python.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-20.x-green?logo=node.js)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 ## 📋 Overview
 
 This project provides a comprehensive, containerized development environment specifically designed for:
+- 🤖 AI/ML Development & Research
+- 🔥 LLM Integration & Fine-tuning
+- 🎯 Production AI System Development
 - 🔒 Security Research & Reverse Engineering
 - 💻 Systems Programming & Low-level Development
 - 🐞 Binary Analysis & Debugging
@@ -19,6 +24,61 @@ This project provides a comprehensive, containerized development environment spe
 ---
 
 ## ✨ Features & Tools
+
+### 🤖 AI Development Stack
+
+#### 🐍 Python AI/ML Tools
+- **Core ML Frameworks**
+  - PyTorch with CUDA support
+  - TensorFlow 2.x
+  - JAX/Jaxlib
+  - NumPy/Pandas
+  - Scikit-learn
+  - SciPy
+  
+- **LLM Frameworks & Tools**
+  - LangChain
+  - OpenAI SDK
+  - Anthropic SDK
+  - Groq SDK
+  - Hugging Face Transformers
+  - LlamaIndex
+  - vLLM
+  - Accelerate
+  - Datasets
+  - Evaluate
+
+- **Vector Databases**
+  - ChromaDB
+  - FAISS
+  - Pinecone SDK
+  - Weaviate Client
+  
+- **Model Management & Monitoring**
+  - MLflow
+  - Weights & Biases
+  - DVC (Data Version Control)
+  
+- **Visualization & Analysis**
+  - Matplotlib
+  - Seaborn
+  - Plotly
+  - Jupyter Notebooks
+  - Streamlit
+
+#### 🟨 JavaScript/TypeScript AI Tools
+- **Core Frameworks**
+  - TensorFlow.js
+  - LangChain.js
+  - OpenAI Node.js SDK
+  - Anthropic SDK
+  - Hugging Face Inference
+  
+- **Development Tools**
+  - Node.js 20.x LTS
+  - pnpm Package Manager
+  - TypeScript
+  - ts-node
 
 ### 🎯 Core Development Environment
 
@@ -42,9 +102,10 @@ This project provides a comprehensive, containerized development environment spe
   - Alternative compiler toolchain
   - Static analysis tools
 - **Rust**
+  - Latest stable toolchain
   - Systems programming
   - Cross-compilation support
-- **Go**
+- **Go 1.21.6**
   - Modern systems programming
   - Network tool development
 - **NASM**
@@ -67,7 +128,7 @@ This project provides a comprehensive, containerized development environment spe
   - Alternative GDB enhancement
   - Exploit development features
 
-#### Binary Analysis
+#### Binary Analysis Tools
 - **Binwalk**
   - Firmware analysis
   - File system extraction
@@ -77,6 +138,12 @@ This project provides a comprehensive, containerized development environment spe
 - **Frida**
   - Dynamic instrumentation
   - Runtime analysis
+- **Other Tools**
+  - pefile
+  - Keystone Engine
+  - Unicorn Engine
+  - Capstone
+  - Ropper
 
 #### Python Security Tools
 - **Pwntools**
@@ -117,8 +184,9 @@ This project provides a comprehensive, containerized development environment spe
 ### Prerequisites
 - Docker Desktop installed
 - Git (optional)
-- 4GB+ RAM recommended
-- 10GB+ free disk space
+- 8GB+ RAM recommended (16GB+ for AI workloads)
+- 20GB+ free disk space
+- NVIDIA GPU + CUDA drivers (optional, for GPU acceleration)
 
 ### 🐳 Quick Start
 
@@ -130,12 +198,20 @@ cd dev-environment
 
 2. **Build the Container**
 ```bash
+# CPU-only build
 docker build -t dev-environment .
+
+# GPU-enabled build (uncomment CUDA section in Dockerfile first)
+docker build -t dev-environment --build-arg USE_GPU=true .
 ```
 
 3. **Run the Environment**
 ```bash
+# CPU-only
 docker run -it -v $(pwd):/workdir dev-environment
+
+# With GPU support
+docker run -it --gpus all -v $(pwd):/workdir dev-environment
 ```
 
 4. **Verify Installation**
@@ -143,63 +219,84 @@ docker run -it -v $(pwd):/workdir dev-environment
 # Check NeoVim
 nvim --version
 
-# Check GCC
-gcc --version
+# Check Python AI tools
+python -c "import torch; print(f'PyTorch: {torch.__version__}')"
+python -c "import tensorflow as tf; print(f'TensorFlow: {tf.__version__}')"
+python -c "import langchain; print(f'LangChain: {langchain.__version__}')"
 
-# Check Radare2
-r2 -v
+# Check Node.js tools
+node --version
+pnpm list @langchain/openai
 ```
 
 ---
 
-## 💡 Usage Guide
+## 💡 Development Guides
 
-### 🖥️ NeoVim/LazyVim Basics
+### 🤖 AI/ML Development
 
-#### Essential Keybindings
-```
-Leader Key = <Space>
+#### LLM Integration Example
+```python
+from langchain.llms import OpenAI
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
 
-# File Operations
-<Space>ff    - Find files
-<Space>fg    - Live grep
-<Space>e     - File explorer
-<Space>w     - Save file
-<Space>q     - Close window
+# Initialize LLM
+llm = OpenAI(temperature=0.7)
 
-# Code Navigation
-gd           - Go to definition
-gr           - Find references
-K            - Show documentation
-<Space>ca    - Code actions
+# Create prompt template
+prompt = PromptTemplate(
+    input_variables=["topic"],
+    template="Write a brief analysis about {topic}."
+)
 
-# Terminal
-<Space>ft    - Float terminal
-<C-\>        - Toggle terminal
+# Create chain
+chain = LLMChain(llm=llm, prompt=prompt)
 
-# Git
-<Space>gg    - Lazygit
-<Space>gj    - Next hunk
-<Space>gk    - Prev hunk
-
-# LSP
-<Space>lr    - Rename
-<Space>lf    - Format
-<Space>la    - Code actions
+# Run chain
+result = chain.run(topic="artificial intelligence")
 ```
 
-### 🔧 Development Workflows
+#### Vector Database Usage
+```python
+import chromadb
 
-#### C/C++ Development
+# Initialize client
+client = chromadb.Client()
+
+# Create collection
+collection = client.create_collection("my_documents")
+
+# Add documents
+collection.add(
+    documents=["Document 1 content", "Document 2 content"],
+    metadatas=[{"source": "web"}, {"source": "book"}],
+    ids=["doc1", "doc2"]
+)
+
+# Query
+results = collection.query(
+    query_texts=["search query"],
+    n_results=2
+)
+```
+
+### 🔧 Reverse Engineering Workflows
+
+#### Basic Binary Analysis
 ```bash
-# Compile 32-bit
-gcc -m32 -o program32 program.c
+# Using Radare2
+r2 -A ./binary
+aaa        # Analyze all
+afl        # List functions
+s main     # Seek to main
+pdf        # Print disassembly
 
-# Compile 64-bit
-gcc -m64 -o program64 program.c
-
-# Debug with GDB
-gdb ./program
+# Using GDB/GEF
+gdb ./binary
+gef> checksec
+gef> vmmap
+gef> heap
 ```
 
 #### Assembly Development
@@ -208,24 +305,8 @@ gdb ./program
 nasm -f elf64 code.asm -o code.o
 ld code.o -o program
 
-# Debug assembly
+# Debug
 gdb ./program
-```
-
-#### Reverse Engineering
-```bash
-# Basic analysis
-r2 -A ./binary
-aaa        # Analyze all
-afl        # List functions
-s main     # Seek to main
-pdf        # Print disassembly
-
-# Memory analysis
-gdb ./program
-gef> checksec
-gef> vmmap
-gef> heap
 ```
 
 ---
@@ -238,68 +319,90 @@ gef> heap
 ├── README.md          # This file
 ├── config/            # Tool configurations
 │   ├── nvim/          # NeoVim/LazyVim config
-│   └── gdb/           # GDB/GEF config
+│   ├── gdb/           # GDB/GEF config
+│   ├── ml/            # ML tools config
+│   └── node/          # Node.js config
 ├── scripts/           # Utility scripts
+├── templates/         # Project templates
+│   ├── ai/            # AI project templates
+│   ├── re/            # RE project templates
+│   └── systems/       # Systems project templates
 └── workdir/           # Mounted work directory
 ```
 
-## 🔧 Customization
+## 🔧 Environment Configuration
 
-### Adding New Tools
-1. Edit `Dockerfile`
-2. Add required packages
-3. Rebuild container
+### API Keys Setup
+```bash
+# Create environment file
+cat > .env << EOL
+OPENAI_API_KEY=your-key
+ANTHROPIC_API_KEY=your-key
+GROQ_API_KEY=your-key
+HUGGINGFACE_TOKEN=your-token
+PINECONE_API_KEY=your-key
+WANDB_API_KEY=your-key
+EOL
 
-### NeoVim Configuration
-- Config location: `~/.config/nvim/`
-- Add plugins: Edit `lua/config/lazy.lua`
-- Custom keymaps: Edit `lua/config/keymaps.lua`
+# Source environment
+source .env
+```
 
----
+### GPU Configuration
+```bash
+# Check GPU availability
+python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}')"
+
+# Set visible devices
+export CUDA_VISIBLE_DEVICES=0
+```
 
 ## 🐛 Troubleshooting
 
 ### Common Issues
 
-1. **Docker Permission Errors**
+1. **Docker Permission Issues**
 ```bash
 sudo usermod -aG docker $USER
 newgrp docker
 ```
 
-2. **NeoVim Plugin Issues**
+2. **CUDA/GPU Issues**
 ```bash
-# Clear plugin cache
-rm -rf ~/.local/share/nvim
-# Reinstall plugins
-:Lazy sync
+# Check NVIDIA driver installation
+nvidia-smi
+
+# Verify CUDA installation
+nvcc --version
 ```
 
-3. **GDB Issues**
+3. **Python Package Issues**
 ```bash
-# Reinstall GEF
-wget -O ~/.gdbinit-gef.py -q https://gef.blah.cat/py
-# Source configuration
-source ~/.gdbinit-gef.py
-```
+# Upgrade pip
+pip install --upgrade pip
 
----
+# Install packages in user space
+pip install --user package_name
+```
 
 ## 📚 Resources
 
 - [LazyVim Documentation](https://www.lazyvim.org/)
+- [LangChain Documentation](https://python.langchain.com/docs)
 - [Radare2 Book](https://book.rada.re/)
 - [GEF Documentation](https://gef.readthedocs.io/)
 - [Docker Documentation](https://docs.docker.com/)
+- [PyTorch Documentation](https://pytorch.org/docs)
+- [TensorFlow Documentation](https://www.tensorflow.org/docs)
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
 1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
 ## 📄 License
