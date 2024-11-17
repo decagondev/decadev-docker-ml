@@ -190,28 +190,31 @@ This project provides a comprehensive, containerized development environment spe
 
 ### 🐳 Quick Start
 
+0. **fork the Repository**
+- fork it to your account
+
 1. **Clone the Repository**
 ```bash
-git clone https://github.com/yourusername/dev-environment.git
-cd dev-environment
+git clone https://github.com/yourusername/decadev-docker-ml.git
+cd decadev-docker-ml
 ```
 
 2. **Build the Container**
 ```bash
 # CPU-only build
-docker build -t dev-environment .
+docker build -t decadev-docker-ml .
 
 # GPU-enabled build (uncomment CUDA section in Dockerfile first)
-docker build -t dev-environment --build-arg USE_GPU=true .
+docker build -t decadev-docker-ml --build-arg USE_GPU=true .
 ```
 
 3. **Run the Environment**
 ```bash
 # CPU-only
-docker run -it -v $(pwd):/workdir dev-environment
+docker run -it -v $(pwd):/workdir decadev-docker-ml
 
 # With GPU support
-docker run -it --gpus all -v $(pwd):/workdir dev-environment
+docker run -it --gpus all -v $(pwd):/workdir decadev-docker-ml
 ```
 
 4. **Verify Installation**
