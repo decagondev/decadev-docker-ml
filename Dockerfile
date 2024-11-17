@@ -145,10 +145,6 @@ RUN git clone https://github.com/radareorg/radare2.git /opt/radare2 && \
     sys/install.sh && \
     rm -rf /opt/radare2
 
-RUN git clone https://github.com/ReFirmLabs/binwalk.git /opt/binwalk && \
-    cd /opt/binwalk && \
-    python3 setup.py install
-
 RUN git clone https://github.com/JonathanSalwan/ROPgadget.git /opt/ROPgadget && \
     cd /opt/ROPgadget && \
     python3 setup.py install
