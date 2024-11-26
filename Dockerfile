@@ -142,8 +142,7 @@ RUN git clone https://github.com/pwndbg/pwndbg /opt/pwndbg && \
 
 RUN git clone https://github.com/radareorg/radare2.git /opt/radare2 && \
     cd /opt/radare2 && \
-    sys/install.sh && \
-    rm -rf /opt/radare2
+    sys/install.sh
 
 RUN git clone https://github.com/JonathanSalwan/ROPgadget.git /opt/ROPgadget && \
     cd /opt/ROPgadget && \
